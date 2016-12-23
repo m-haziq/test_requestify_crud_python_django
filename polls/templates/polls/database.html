@@ -1,0 +1,61 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		$(".b1").click(function(event){
+			var id= $(this).parent().parent().attr('id');
+			var i = (this).parentNode.parentNode.rowIndex;
+			console.log(i);
+			$.ajax({
+				type:'POST',
+				url:'/polls/delete_func/',
+				data:{'id': id},
+				success:function(sid){
+					document.getElementById("t1").deleteRow(i);
+					console.log('hello');
+				}
+			})
+			
+			console.log(id);
+		});
+		$(".b2").click(function(event){
+			var id = $(this).parent().parent().attr('id');
+			var u1= document.getElementById('u1').value;
+			var n1= document.getElementById('n1').value;
+			var i = (this).parentNode.parentNode.rowIndex;
+			
+			$.ajax({
+				type:'POST',
+				url:'/polls/update_func/',
+				data:{'id':id,'url':u1,'name':n1},
+				success:function(sid){
+					console.log('hello update for 1');
+					$('#'+id).html('<td>'+u1+'</td><td>'+n1+'</td> <td><Button class="b1">Delete</Button><Button class="b2">Update</Button></td>')
+					console.log('hello update');
+				}
+			});
+		});
+	});
+</script>
+
+{% if data %}
+<table rules="all" id="t1" style="width:100%; border:5px solid #990000; border-collapse: collapse">
+	<tr>
+    <th>URL</th>
+    <th>TITLE</th>
+    <th>Options</th>
+	{% for q in data %}
+		<tr id={{q.id}}><td>{{q.name}}</td><td>{{q.phone}}</td> <td><Button class="b1">Delete</Button><Button class="b2">Update</Button></td></tr>
+
+	{% endfor %}
+  </tr>
+</table>
+
+<div>
+	Alternate URL: <input type="text" id="u1"/>
+	Alternate Name: <input type="text" id="n1"/>
+	
+</div>
+	
+{% else %}
+	<p>no contact is found</p>
+{% endif %}

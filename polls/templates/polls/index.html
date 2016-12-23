@@ -1,0 +1,9 @@
+{% if list_contacts %}
+    <ul>
+		{%for q in list_contacts%}
+		    <li><a href = "/polls/{{q.id}}/">{{q.name}} </a></li>
+		{% endfor %}
+	</ul>
+{% else %}
+	<p>no contact is found</p>
+{% endif %}

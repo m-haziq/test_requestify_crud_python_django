@@ -1,0 +1,47 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	$("#b1").click(function(event){
+		$("#d1").append("<h1>Sabar Karo thora</h1>")
+		event.preventDefault();
+		console.log("hello inside")
+		var value = document.getElementById('url').value;
+		console.log(value)
+		$.ajax({
+			type: 'POST',
+			url: '/polls/ajax_func/',
+			data: {'value': value},
+			
+			success: function(result){
+				var data= JSON.parse(result)
+				for(var i = 0; i < data.urlArray.length ; i++){
+					$("#t1").append( "<tr><td>" + data.urlArray[i] + "</td><td>" + data.titleArray[i] + "</td></tr>")	
+				}
+				console.log(data.urlArray[0] +' : '+ data.titleArray[0])
+				console.log(data.urlArray[1] +' : '+ data.titleArray[1])
+			}
+			
+		});
+	});
+});
+
+</script>
+<h1>Enter the URL you want to search for!</h1>
+
+<form action="{%url 'detail' %}" method = "post">
+{% csrf_token %}
+	<input id="url" name="url" type="text" placeholder= "Enter URL" />
+	<input type="submit" value= "GO"/>
+</form>
+
+<Button id="b1" >Go with Ajax</Button>
+
+<div id="d1">
+
+<table rules="all" id="t1" style="width:100%; border: 5px solid #990000; border-collapse: collapse">
+	<tr>
+    <th>URL</th>
+    <th>TITLE</th>
+  </tr>
+</table>
+</div>
